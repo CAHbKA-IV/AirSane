@@ -285,8 +285,7 @@ Scanner::Private::writeScannerCapabilitiesXml(std::ostream& os) const
       mpAdfDuplex->writeCapabilitiesXml(os);
       os << "</scan:AdfDuplexInputCaps>\r\n";
     }
-    os << "<scan:AdfOptions>\r\n"
-       << "<scan:AdfOption>DetectPaperLoaded</scan:AdfOption>\r\n";
+    os << "<scan:AdfOptions>\r\n";
     if (mpAdfDuplex) {
       os << "<scan:AdfOption>Duplex</scan:AdfOption>\r\n";
     }
@@ -987,10 +986,6 @@ Scanner::writeScannerStatusXml(std::ostream& os) const
         "<pwg:State>"
      << p->statusString()
      << "</pwg:State>\r\n";
-
-  if (p->mpAdfSimplex || p->mpAdfDuplex)
-    os << "<scan:AdfState>" << p->temporaryAdfStatusString()
-       << "</scan:AdfState>\r\n";
 
   os << "<scan:Jobs>\r\n";
   std::lock_guard<std::mutex> lock(p->mJobsMutex);
