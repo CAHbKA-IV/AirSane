@@ -772,6 +772,18 @@ ScanJob::Private::finishTransfer(std::ostream& os)
       }
     }
     std::clog << "lines written: " << linesWritten << std::endl;
+    if (linesWritten > 128 && linesWritten < pEncoder->height()) {
+        int moreLines = pEncoder->height() - linesWritten;
+        std::clog << "trying extend buffer to lines: " << linesWritten+moreLines << std::endl;
+        unsigned char* byteArray = new unsigned char[pEncoder->bytesPerLine()];
+            // (unsigned char *) calloc(pEncoder->bytesPerLine(), sizeof(unsigned char));
+        std::memset (byteArray, 255, pEncoder->bytesPerLine());
+        for (int i=0;i<moreLines;i++)
+            pEncoder->writeLine(byteArray);
+        delete[] byteArray;
+        linesWritten=pEncoder->height();
+        std::clog << "buffer extended: " << linesWritten << std::endl;
+    }
     if (isProcessing()) {
       ++mImagesCompleted;
       std::clog << "images completed: " << mImagesCompleted << std::endl;
