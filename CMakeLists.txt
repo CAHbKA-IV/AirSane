@@ -71,6 +71,7 @@ add_executable(${PROJECT_NAME}
     server/optionsfile.cpp
     server/server.cpp
     server/mainpage.cpp
+    server/listpage.cpp
     server/scanner.cpp
     server/purgethread.cpp
     server/scanjob.cpp

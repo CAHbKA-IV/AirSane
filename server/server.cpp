@@ -29,6 +29,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #include <unistd.h>
 
 #include "mainpage.h"
+#include "listpage.h"
 #include "scannerpage.h"
 #include "optionsfile.h"
 #include "scanjob.h"
@@ -526,6 +527,11 @@ Server::onRequest(const Request& request, Response& response)
         response.setHeader(HttpServer::HTTP_HEADER_CONTENT_TYPE, "text/html");
         MainPage(mScanners, mResetoption, mDiscloseversion)
           .setTitle("AirSane Server on " + mPublisher.hostname())
+          .render(request, response);
+      } else if (request.uri() == mBasePath + "/list") {
+        response.setStatus(HttpServer::HTTP_OK);
+        response.setHeader(HttpServer::HTTP_HEADER_CONTENT_TYPE, "text/plain");
+        ListPage(mScanners, mResetoption, mDiscloseversion)
           .render(request, response);
       } else if (request.uri() == "/reset" && mResetoption) {
         response.setStatus(HttpServer::HTTP_OK);
